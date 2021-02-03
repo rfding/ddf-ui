@@ -16,6 +16,8 @@ import * as React from 'react'
 import { hot } from 'react-hot-loader'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 const { Menu, MenuItem } = require('../menu')
 const Dropdown = require('../dropdown')
 import GetAppIcon from '@material-ui/icons/GetApp'
@@ -29,7 +31,7 @@ const Root = styled.div`
   }
 
   .export-option {
-    margin-bottom: ${(props) => props.theme.largeSpacing};
+    margin-bottom: ${(props) => props.theme.minimumSpacing};
   }
 `
 
@@ -41,18 +43,22 @@ type ExportFormat = {
 type Props = {
   selectedFormat: string
   exportFormats: ExportFormat[]
+  encryptionMode: boolean
   downloadDisabled: boolean
   onDownloadClick: () => void
   handleExportOptionChange: () => void
+  handleEncryptionOptionChange: () => void
 }
 
 const ResultsExport = (props: Props) => {
   const {
     selectedFormat,
     exportFormats,
+    encryptionMode,
     downloadDisabled,
     onDownloadClick,
     handleExportOptionChange,
+    handleEncryptionOptionChange,
   } = props
 
   return (
@@ -67,14 +73,26 @@ const ResultsExport = (props: Props) => {
           </Menu>
         </Dropdown>
       </div>
+      <FormControlLabel
+        labelPlacement="end"
+        control={
+          <Checkbox
+            color="default"
+            checked={encryptionMode}
+            onChange={handleEncryptionOptionChange}
+          />
+        }
+        label="Encrypt"
+      />
       <Button
+        className="export-button"
         variant="contained"
         color="primary"
         data-id="download-export-button"
         disabled={downloadDisabled}
         onClick={onDownloadClick}
       >
-        <GetAppIcon /> Download
+        <GetAppIcon /> Export
       </Button>
     </Root>
   )
