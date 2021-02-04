@@ -42,6 +42,7 @@ type Props = {
 type State = {
   downloadDisabled: boolean
   selectedFormat: string
+  encryptionMode: boolean
   exportFormats: ExportFormat[]
 }
 
@@ -51,6 +52,7 @@ class ResultsExport extends React.Component<Props, State> {
     this.state = {
       selectedFormat: 'Select an export option',
       exportFormats: [],
+      encryptionMode: false,
       downloadDisabled: true,
     }
   }
@@ -177,6 +179,11 @@ class ResultsExport extends React.Component<Props, State> {
       saveFile(filename, 'data:' + contentType, data)
     }
   }
+  handleEncryptionOptionChange(e: any) {
+    this.setState({
+      encryptionMode: e.target.checked,
+    })
+  }
   handleExportOptionChange(name: string) {
     this.setState({
       selectedFormat: name,
@@ -188,9 +195,11 @@ class ResultsExport extends React.Component<Props, State> {
       <ResultsExportComponent
         selectedFormat={this.state.selectedFormat}
         exportFormats={this.state.exportFormats}
+        encryptionMode={this.state.encryptionMode}
         downloadDisabled={this.state.downloadDisabled}
         onDownloadClick={this.onDownloadClick.bind(this)}
         handleExportOptionChange={this.handleExportOptionChange.bind(this)}
+        handleEncryptionOptionChange={this.handleEncryptionOptionChange.bind(this)}
       />
     )
   }
