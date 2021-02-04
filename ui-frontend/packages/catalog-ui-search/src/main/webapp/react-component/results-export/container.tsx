@@ -199,7 +199,9 @@ class ResultsExport extends React.Component<Props, State> {
         downloadDisabled={this.state.downloadDisabled}
         onDownloadClick={this.onDownloadClick.bind(this)}
         handleExportOptionChange={this.handleExportOptionChange.bind(this)}
-        handleEncryptionOptionChange={this.handleEncryptionOptionChange.bind(this)}
+        handleEncryptionOptionChange={this.handleEncryptionOptionChange.bind(
+          this
+        )}
       />
     )
   }
