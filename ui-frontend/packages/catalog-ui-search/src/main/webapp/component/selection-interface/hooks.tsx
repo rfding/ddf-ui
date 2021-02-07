@@ -64,6 +64,10 @@ export const useLazyResultsFromSelectionInterface = ({
     })
   )
 
+  Object.values(lazyResults.results).forEach((lazyResult) => {
+    lazyResult.setSelected(true)
+  })
+
   React.useEffect(() => {
     const unsubscribe = lazyResults.subscribeTo({
       subscribableThing: 'filteredResults',

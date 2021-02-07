@@ -2,12 +2,12 @@ import * as React from 'react'
 import { hot } from 'react-hot-loader'
 import Button from '@material-ui/core/Button'
 import { useBackbone } from '../selection-checkbox/useBackbone.hook'
-import { useLazyResultsStatusFromSelectionInterface } from '../selection-interface/hooks'
-import { Elevations } from '../theme/theme'
-import CloseIcon from '@material-ui/icons/Close'
-import TableExport from '../table-export/table-export'
-import { useDialog } from '../dialog'
-import { DarkDivider } from '../dark-divider/dark-divider'
+// import { useLazyResultsStatusFromSelectionInterface } from '../selection-interface/hooks'
+// import { Elevations } from '../theme/theme'
+// import CloseIcon from '@material-ui/icons/Close'
+// import TableExport from '../table-export/table-export'
+// import { useDialog } from '../dialog'
+// import { DarkDivider } from '../dark-divider/dark-divider'
 
 type Props = {
   selectionInterface: any
@@ -22,10 +22,10 @@ const determineIsOutdated = ({ selectionInterface }: Props) => {
 }
 
 const Paging = ({ selectionInterface }: Props) => {
-  const { isSearching } = useLazyResultsStatusFromSelectionInterface({
-    selectionInterface,
-  })
-  const dialogContext = useDialog()
+  // const { isSearching } = useLazyResultsStatusFromSelectionInterface({
+  //   selectionInterface,
+  // })
+  // const dialogContext = useDialog()
 
   const [isOutdated, setIsOutdated] = React.useState(
     determineIsOutdated({ selectionInterface })
@@ -79,7 +79,7 @@ const Paging = ({ selectionInterface }: Props) => {
       >
         Next Page
       </Button>
-      <Button
+      {/* <Button
         data-id="export-table-button"
         className={`${isOutdated ? 'invisible' : ''}`}
         disabled={isSearching}
@@ -130,7 +130,7 @@ const Paging = ({ selectionInterface }: Props) => {
         color="primary"
       >
         Export
-      </Button>
+      </Button> */}
     </>
   )
 }

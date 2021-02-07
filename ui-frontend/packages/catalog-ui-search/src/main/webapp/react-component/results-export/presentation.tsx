@@ -60,6 +60,11 @@ const ResultsExport = (props: Props) => {
     handleExportOptionChange,
     handleEncryptionOptionChange,
   } = props
+  var actualExportFormats = exportFormats
+  actualExportFormats = [
+    { id: 'tdf', displayName: 'TDF' },
+    { id: 'stanag', displayName: 'STANAG' },
+  ]
 
   return (
     <Root>
@@ -67,7 +72,7 @@ const ResultsExport = (props: Props) => {
         <p>Export Format:</p>
         <Dropdown label={selectedFormat}>
           <Menu value={selectedFormat} onChange={handleExportOptionChange}>
-            {exportFormats.map((option) => (
+            {actualExportFormats.map((option) => (
               <MenuItem key={option.id} value={option.displayName} />
             ))}
           </Menu>

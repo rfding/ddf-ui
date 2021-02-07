@@ -182,26 +182,26 @@ const QueryStatus = ({
   )
 }
 
-const LastRan = ({ currentAsOf }: { currentAsOf: number }) => {
-  const [howLongAgo, setHowLongAgo] = React.useState(
-    moment(currentAsOf).fromNow()
-  )
-  React.useEffect(() => {
-    setHowLongAgo(moment(currentAsOf).fromNow())
-    const intervalId = setInterval(() => {
-      setHowLongAgo(moment(currentAsOf).fromNow())
-    }, 60000)
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [currentAsOf])
-  return <div style={{ whiteSpace: 'nowrap' }}>Current as of {howLongAgo}</div>
-}
+// const LastRan = ({ currentAsOf }: { currentAsOf: number }) => {
+//   const [howLongAgo, setHowLongAgo] = React.useState(
+//     moment(currentAsOf).fromNow()
+//   )
+//   React.useEffect(() => {
+//     setHowLongAgo(moment(currentAsOf).fromNow())
+//     const intervalId = setInterval(() => {
+//       setHowLongAgo(moment(currentAsOf).fromNow())
+//     }, 60000)
+//     return () => {
+//       clearInterval(intervalId)
+//     }
+//   }, [currentAsOf])
+//   return <div style={{ whiteSpace: 'nowrap' }}>Current as of {howLongAgo}</div>
+// }
 
 const QueryFeed = ({ selectionInterface }: Props) => {
   const {
     status,
-    currentAsOf,
+    // currentAsOf,
     isSearching,
   } = useLazyResultsStatusFromSelectionInterface({
     selectionInterface,
@@ -211,7 +211,7 @@ const QueryFeed = ({ selectionInterface }: Props) => {
     pending = false,
     failed = false
   if (statusBySource.length === 0) {
-    resultMessage = 'Has not been run'
+    resultMessage = 'No items selected'
   } else {
     const sourcesThatHaveReturned = statusBySource.filter(
       (status) => status.hasReturned
@@ -226,9 +226,9 @@ const QueryFeed = ({ selectionInterface }: Props) => {
           return amt
         }, 0)
 
-      resultMessage = `${results} hit${results === 1 ? '' : 's'}`
+      resultMessage = `${results} items`
     } else {
-      resultMessage = 'Searching...'
+      resultMessage = 'Fetching...'
     }
 
     failed = sourcesThatHaveReturned.some((status) => !status.successful)
@@ -252,7 +252,7 @@ const QueryFeed = ({ selectionInterface }: Props) => {
             {failed ? <i className="fa fa-warning" /> : ''}
             {resultMessage}
           </div>
-          <LastRan currentAsOf={currentAsOf} />
+          {/* <LastRan currentAsOf={currentAsOf} /> */}
         </Grid>
         <Grid item>
           <Dropdown

@@ -125,17 +125,13 @@ module.exports = Marionette.LayoutView.extend({
     const _this = this
     this.dropzone = new Dropzone(this.el.querySelector('.details-dropzone'), {
       paramName: 'parse.resource',
-      url: this.options.url,
+      url: './internal/tdf/upload',
       maxFilesize: 5000000, //MB
       method: 'post',
       autoProcessQueue: false,
-      headers: this.options.extraHeaders,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
       sending(file, xhr, formData) {
-        _.each(_this.overrides, (values, attribute) => {
-          _.each(values, (value) => {
-            formData.append('parse.' + attribute, value)
-          })
-        })
+        formData.append('user_supplied', '{}')
       },
     })
     if (this.options.handleUploadSuccess) {
