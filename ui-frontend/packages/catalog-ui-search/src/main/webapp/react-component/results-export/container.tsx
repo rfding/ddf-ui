@@ -14,12 +14,13 @@
  **/
 import * as React from 'react'
 import { hot } from 'react-hot-loader'
-import fetch from '../utils/fetch'
+// import fetch from '../utils/fetch'
 import ResultsExportComponent from './presentation'
-import { exportResult, exportResultSet } from '../utils/export'
-import { getResultSetCql } from '../utils/cql'
+// import { exportResult, exportResultSet } from '../utils/export'
+// import { getResultSetCql } from '../utils/cql'
 import saveFile from '../utils/save-file'
 import withListenTo, { WithBackboneProps } from '../backbone-container'
+import { exportKnotted } from '../utils/export/export'
 
 const contentDisposition = require('content-disposition')
 
@@ -51,7 +52,10 @@ class ResultsExport extends React.Component<Props, State> {
     super(props)
     this.state = {
       selectedFormat: 'Select an export option',
-      exportFormats: [],
+      exportFormats: [
+        { id: 'tdf', displayName: 'TDF' },
+        { id: 'stanag', displayName: 'STANAG' },
+      ],
       encryptionMode: false,
       downloadDisabled: true,
     }
@@ -62,7 +66,7 @@ class ResultsExport extends React.Component<Props, State> {
       _prevProps.results !== this.props.results ||
       _prevProps.isZipped !== this.props.isZipped
     ) {
-      this.fetchExportOptions()
+      // this.fetchExportOptions()
       this.setState({
         selectedFormat: 'Select an export option',
         downloadDisabled: true,
@@ -76,34 +80,34 @@ class ResultsExport extends React.Component<Props, State> {
       : 'metacard'
   }
 
-  componentDidMount() {
-    this.fetchExportOptions()
-  }
+  // componentDidMount() {
+  //   this.fetchExportOptions()
+  // }
 
-  fetchExportOptions = () => {
-    fetch(`./internal/transformers/${this.getTransformerType()}`)
-      .then((response) => response.json())
-      .then((exportFormats: ExportFormat[]) => {
-        return exportFormats.sort(
-          (format1: ExportFormat, format2: ExportFormat) => {
-            if (format1.displayName > format2.displayName) {
-              return 1
-            }
+  // fetchExportOptions = () => {
+  //   fetch(`./internal/transformers/${this.getTransformerType()}`)
+  //     .then((response) => response.json())
+  //     .then((exportFormats: ExportFormat[]) => {
+  //       return exportFormats.sort(
+  //         (format1: ExportFormat, format2: ExportFormat) => {
+  //           if (format1.displayName > format2.displayName) {
+  //             return 1
+  //           }
 
-            if (format1.displayName < format2.displayName) {
-              return -1
-            }
+  //           if (format1.displayName < format2.displayName) {
+  //             return -1
+  //           }
 
-            return 0
-          }
-        )
-      })
-      .then((exportFormats) =>
-        this.setState({
-          exportFormats: exportFormats,
-        })
-      )
-  }
+  //           return 0
+  //         }
+  //       )
+  //     })
+  //     .then((exportFormats) =>
+  //       this.setState({
+  //         exportFormats: exportFormats,
+  //       })
+  //     )
+  // }
 
   getResultSources() {
     return new Set(this.props.results.map((result: Result) => result.source))
@@ -130,44 +134,48 @@ class ResultsExport extends React.Component<Props, State> {
     }
 
     let response = null
-    const count = this.props.results.length
-    const cql = getResultSetCql(
-      this.props.results.map((result: Result) => result.id)
-    )
-    const srcs = Array.from(this.getResultSources())
-    const searches = [
-      {
-        srcs,
-        cql,
-        count,
-      },
-    ]
+    // const count = this.props.results.length
+    // const cql = getResultSetCql(
+    //   this.props.results.map((result: Result) => result.id)
+    // )
+    // const srcs = Array.from(this.getResultSources())
+    // const searches = [
+    //   {
+    //     srcs,
+    //     cql,
+    //     count,
+    //   },
+    // ]
 
-    if (this.props.isZipped) {
-      response = await exportResultSet('zipCompression', {
-        searches,
-        count,
-        sorts: [],
-        args: {
-          transformerId: uriEncodedTransformerId,
-        },
-      })
-    } else if (this.props.results.length > 1) {
-      response = await exportResultSet(uriEncodedTransformerId, {
-        searches,
-        count,
-        sorts: [],
-      })
-    } else {
-      const result = this.props.results[0]
+    // if (this.props.isZipped) {
+    //   response = await exportResultSet('zipCompression', {
+    //     searches,
+    //     count,
+    //     sorts: [],
+    //     args: {
+    //       transformerId: uriEncodedTransformerId,
+    //     },
+    //   })
+    // } else if (this.props.results.length > 1) {
+    //   response = await exportResultSet(uriEncodedTransformerId, {
+    //     searches,
+    //     count,
+    //     sorts: [],
+    //   })
+    // } else {
+    //   const result = this.props.results[0]
 
-      response = await exportResult(
-        result.source,
-        result.id,
-        uriEncodedTransformerId,
-        result.attributes.toString()
-      )
-    }
+    //   response = await exportResult(
+    //     result.source,
+    //     result.id,
+    //     uriEncodedTransformerId,
+    //     result.attributes.toString()
+    //   )
+    // }
+
+    const result = this.props.results[0]
+
+    response = await exportKnotted(result.id, uriEncodedTransformerId)
 
     if (response.status === 200) {
       const filename = contentDisposition.parse(
@@ -179,11 +187,11 @@ class ResultsExport extends React.Component<Props, State> {
       saveFile(filename, 'data:' + contentType, data)
     }
   }
-  handleEncryptionOptionChange(e: any) {
-    this.setState({
-      encryptionMode: e.target.checked,
-    })
-  }
+  // handleEncryptionOptionChange(e: any) {
+  //   this.setState({
+  //     encryptionMode: e.target.checked,
+  //   })
+  // }
   handleExportOptionChange(name: string) {
     this.setState({
       selectedFormat: name,
@@ -195,13 +203,13 @@ class ResultsExport extends React.Component<Props, State> {
       <ResultsExportComponent
         selectedFormat={this.state.selectedFormat}
         exportFormats={this.state.exportFormats}
-        encryptionMode={this.state.encryptionMode}
+        // encryptionMode={this.state.encryptionMode}
         downloadDisabled={this.state.downloadDisabled}
         onDownloadClick={this.onDownloadClick.bind(this)}
         handleExportOptionChange={this.handleExportOptionChange.bind(this)}
-        handleEncryptionOptionChange={this.handleEncryptionOptionChange.bind(
-          this
-        )}
+        // handleEncryptionOptionChange={this.handleEncryptionOptionChange.bind(
+        //   this
+        // )}
       />
     )
   }

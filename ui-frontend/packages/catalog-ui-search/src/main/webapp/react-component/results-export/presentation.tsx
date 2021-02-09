@@ -16,8 +16,8 @@ import * as React from 'react'
 import { hot } from 'react-hot-loader'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+// import Checkbox from '@material-ui/core/Checkbox'
+// import FormControlLabel from '@material-ui/core/FormControlLabel'
 const { Menu, MenuItem } = require('../menu')
 const Dropdown = require('../dropdown')
 import GetAppIcon from '@material-ui/icons/GetApp'
@@ -26,7 +26,7 @@ const Root = styled.div`
   padding: ${(props) => props.theme.largeSpacing};
 
   button {
-    margin-top: ${(props) => props.theme.minimumSpacing};
+    margin-top: ${(props) => props.theme.largeSpacing};
     width: 100%;
   }
 
@@ -43,28 +43,21 @@ type ExportFormat = {
 type Props = {
   selectedFormat: string
   exportFormats: ExportFormat[]
-  encryptionMode: boolean
+  // encryptionMode: boolean
   downloadDisabled: boolean
   onDownloadClick: () => void
   handleExportOptionChange: () => void
-  handleEncryptionOptionChange: () => void
+  // handleEncryptionOptionChange: () => void
 }
 
 const ResultsExport = (props: Props) => {
   const {
     selectedFormat,
     exportFormats,
-    encryptionMode,
     downloadDisabled,
     onDownloadClick,
     handleExportOptionChange,
-    handleEncryptionOptionChange,
   } = props
-  var actualExportFormats = exportFormats
-  actualExportFormats = [
-    { id: 'tdf', displayName: 'TDF' },
-    { id: 'stanag', displayName: 'STANAG' },
-  ]
 
   return (
     <Root>
@@ -72,23 +65,13 @@ const ResultsExport = (props: Props) => {
         <p>Export Format:</p>
         <Dropdown label={selectedFormat}>
           <Menu value={selectedFormat} onChange={handleExportOptionChange}>
-            {actualExportFormats.map((option) => (
+            {exportFormats.map((option) => (
               <MenuItem key={option.id} value={option.displayName} />
             ))}
           </Menu>
         </Dropdown>
       </div>
-      <FormControlLabel
-        labelPlacement="end"
-        control={
-          <Checkbox
-            color="default"
-            checked={encryptionMode}
-            onChange={handleEncryptionOptionChange}
-          />
-        }
-        label="Encrypt"
-      />
+
       <Button
         className="export-button"
         variant="contained"

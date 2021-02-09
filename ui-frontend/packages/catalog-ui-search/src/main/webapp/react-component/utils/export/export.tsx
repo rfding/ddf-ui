@@ -90,6 +90,17 @@ export const exportResult = async (
   )
 }
 
+export const exportKnotted = async (id: string, exportFormat: string) => {
+  var body = {
+    id: id,
+    exportFormat: exportFormat,
+  }
+  return await fetch(`./internal/tdf/knottedexport`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
 export const exportResultSet = async (
   transformer: string,
   body: ExportBody
