@@ -3,7 +3,7 @@ import { hot } from 'react-hot-loader'
 import { Dropdown } from '../atlas-dropdown'
 import Paper from '@material-ui/core/Paper'
 import { BetterClickAwayListener } from '../better-click-away-listener/better-click-away-listener'
-const moment = require('moment')
+// const moment = require('moment')
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
