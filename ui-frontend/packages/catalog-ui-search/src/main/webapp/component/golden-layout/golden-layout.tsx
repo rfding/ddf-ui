@@ -3,9 +3,9 @@ import MRC from '../../react-component/marionette-region-container'
 import { useResizableGridContext } from '../resizable-grid/resizable-grid'
 import GoldenLayoutView from './golden-layout.view'
 import Grid from '@material-ui/core/Grid'
-// import Paper from '@material-ui/core/Paper'
-// import ResultSelector from '../result-selector/result-selector'
-// import { Elevations } from '../theme/theme'
+import Paper from '@material-ui/core/Paper'
+import ResultSelector from '../result-selector/result-selector'
+import { Elevations } from '../theme/theme'
 
 type Props = {
   selectionInterface: any
@@ -40,7 +40,7 @@ export const GoldenLayout = ({ selectionInterface }: Props) => {
       className="w-full h-full"
       wrap="nowrap"
     >
-      {/* <Grid item className="w-full relative z-1 pb-2 pt-2 pr-2 flex-shrink-0">
+      <Grid item className="w-full relative z-1 pb-2 pt-2 pr-2 flex-shrink-0">
         <Paper
           elevation={Elevations.panels}
           className="w-full p-3 overflow-hidden"
@@ -51,7 +51,7 @@ export const GoldenLayout = ({ selectionInterface }: Props) => {
             goldenLayoutViewInstance={goldenlayoutInstance}
           />
         </Paper>
-      </Grid> */}
+      </Grid>
 
       <Grid
         item
